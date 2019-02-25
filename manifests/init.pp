@@ -6,14 +6,17 @@ class apache_demo {
 
   file { '/var/www/html':
     ensure => directory,
+    require => Package['httpd'],
   }
 
   file { '/var/www/html/index.html':
     ensure => file,
     content => "Puppet rocks!",
+    require => File['/var/www/html'],
   }
 
   service { 'httpd':
     ensure => running,
+    subscribe => File['/var/www/html/index.html'],
   }
 }
